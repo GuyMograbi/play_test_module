@@ -1,0 +1,97 @@
+The play!framework Test Module will help you write better tests for play!framework applications.
+
+For example instead of writing something like
+<pre><code>
+ Response response = GET("/");
+ assertIsOk(response);
+ assertContentType("text/html", response);
+ assertCharset("utf-8", response);
+</code></pre>
+
+You can write something like
+<pre><code>
+ controller()._index();
+ response()
+         .assertIsOk()
+         .assertContentType(ContentType.TEXT_HTML)
+         .assertCharset(Charset.UTF_8);
+</code></pre>
+<h1> Example Code </h1>
+In order to demonstrate the capabilities of this module, I added a small application called "module_test_app" with a controller,mails and tests.
+You can view the sources yourself in github as the sample code will be most updated.
+The documentation here will also be helpful but I can't promise it is up to date.
+<h1> Create a new Test </h1>
+For this example I will add some functions to the controller "Application", and I will test it.
+First, lets see how to get the example above to test "index" with the module.
+The controller "Application" has a function with the following signature.
+<pre><code>public static void index()</code></pre>
+To use the module, I will create another class called "TApplication" (no constraints on name) with the following signature
+<pre><code>public void _index()</code></pre>
+As you can see, there are 2 differences. The name has a prefix of "_" (underscore), and the method is no longer static.
+Now lets write the test.
+The test will be written in a new class
+<pre><code>public class ApplicationTest extends TestModuleFunctionalTest<TApplication></code></pre>
+The name of the class is not constrained to any standards, but it must extend TestModuleFunctionalTest and specify the controller we created, in this case TApplication.
+Now I can write the test method which will look like this :
+<pre><code>
+    @Test
+    public void testThatIndexPageWorks() {
+        controller()._index();
+        response()
+                .assertIsOk()
+                .assertContentType(ContentType.TEXT_HTML)
+                .assertCharset(Charset.UTF_8);
+}
+</code></pre>
+And that's it!
+I can also easily add arguments to the signatures of "Application#index" and "TApplication#_index" to make requests with parameters.
+<h1> Verifying Redirects</h1>
+Now that we have everything set up to test "Application", lets add some more actions and test them.
+For example I will add 3 actions : "dashboard" , "showPage" and "changeSomething"
+<pre><code>
+public static void dashboard()
+    {
+        index();
+    }
+ public static void showPage( Long id )
+    {
+        renderText("showing page : " + id);
+    }
+
+ public static void changeSomething()
+    {
+        showPage( 1L );
+    }
+</code></pre>
+
+I will also add a route
+<pre><code>GET     /showpage/{id}                          Application.showPage(id:{id})</code></pre>
+Just for the fun of it. I could've left the route out of the example, but it spices things up.
+
+In order to test these actions, all I need to prepare is the signatures in "TApplication". It will look like this
+<pre><code>
+   public void _changeSomething() {
+    }
+
+    public void _showPage(Long id) {
+    }
+
+    public void _dashboard() {
+    }
+</code></pre>
+
+Now I can go write the test. The test will look like this
+<pre><code>
+ @Test
+    public void testRedirect()
+    {
+        controller()._dashboard();
+        assertRedirect();
+        controller()._index();
+        controller()._changeSomething();
+        assertRedirect();
+        controller()._showPage(1L);
+    }
+</code></pre>
+
+As you can see, I invoke "assertRedirect" each time I want to verify that the last response redirected me to the next request. In this example, you can see this supports calls with or without parameters. 

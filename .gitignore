@@ -1,0 +1,7 @@
+.idea
+commands.pyc
+dist
+lib
+module_test_app/test-result
+module_test_app/tmp
+*.iml
