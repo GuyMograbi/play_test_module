@@ -1,0 +1,25 @@
+#{extends 'main.html' /}
+#{set title:'Home' /}
+
+        <script type="text/javascript">
+            function sendInAjax()
+            {
+                $.post('@{Application.message}',$("#data").val(),function(data){$("#ajaxResponse").html(data)})
+            }
+            </script>
+str : ${str}
+
+
+            <input type="text" id="data" />
+        <button onclick="sendInAjax()">send</button>
+
+        <div id="ajaxResponse">
+
+        </div>
+
+
+
+<h1>Old messages</h1>
+#{list items:msgs}
+<div>${_}</div>       
+#{/list}
