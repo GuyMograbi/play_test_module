@@ -21,6 +21,11 @@ public class MailWrapper {
         return new MailWrapper(Mail.Mock.getLastMessageReceivedBy(recipient));
     }
 
+    @Override
+    public String toString() {
+        return message;
+    }
+
     public void assertContains(String substring)
     {
         Assert.assertNotNull("The last email recieved is null",message);

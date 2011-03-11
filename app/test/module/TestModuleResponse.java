@@ -16,6 +16,7 @@ import java.util.Map;
 public class TestModuleResponse extends Http.Response {
 
     String val;
+    private Http.Response res;
 
     public TestModuleResponse(Http.Response res) {
         this.contentType = res.contentType;
@@ -23,6 +24,7 @@ public class TestModuleResponse extends Http.Response {
         this.direct = res.direct;
         this.headers = res.headers;
         this.out = res.out;
+        this.res = res;
         val = res.out.toString();
         this.status = res.status;
     }
@@ -59,12 +61,12 @@ public class TestModuleResponse extends Http.Response {
 
     public Map<String, Http.Header> getHeaders()
     {
-        return this.headers;
+        return res.headers;
     }
 
     public Integer getStatus()
     {
-        return this.status;
+        return res.status;
     }
 
 

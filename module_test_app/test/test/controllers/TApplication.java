@@ -3,6 +3,7 @@ package test.controllers;
 import controllers.Application;
 import models.Message;
 import test.module.RequestBody;
+import test.module.TestModuleResponse;
 
 import static test.module.TestModuleController.setRequestBody;
 
@@ -14,7 +15,8 @@ import static test.module.TestModuleController.setRequestBody;
  */
 public class TApplication extends Application {
 
-    public void _index() {
+    public TestModuleResponse _index() {
+        return null;
     }
 
     public void _login(String username, String password) {
@@ -24,8 +26,8 @@ public class TApplication extends Application {
 
     }
 
-    public void _message() {
-
+    public TestModuleResponse _message() {
+            return null;
     }
 
     public Message getMessageByContent(String message) {
@@ -41,9 +43,9 @@ public class TApplication extends Application {
     }
 
 
-    public void postMessage(String message) {
+    public TestModuleResponse postMessage(String message) {
         setRequestBody(new RequestBody(message));
-        _message();
+        return _message();
     }
 
     public void _changeSomething() {

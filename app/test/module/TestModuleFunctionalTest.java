@@ -23,6 +23,11 @@ public class TestModuleFunctionalTest<T extends Controller> extends FunctionalTe
         controller = CGLibFactory.generateController(t);
     }
 
+    public <V> V controller(Class<V> clzz)
+    {
+        return CGLibFactory.generateController(clzz);
+    }
+
     public T controller()
     {
        return controller; 
